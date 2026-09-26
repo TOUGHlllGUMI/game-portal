@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="ブラウザですぐ遊べる、手づくりの小さなゲームを集めた場所。">
+<meta name="theme-color" content="#161a33">
+<title>あそびば</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --ground:#161a33;
+  --dot:rgba(255,255,255,.055);
+  --card:#20254a;
+  --card-edge:rgba(255,255,255,.08);
+  --text:#f3f1ec;
+  --muted:#a9abc6;
+  --chip:rgba(255,255,255,.07);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;
+  background-color:var(--ground);
+  background-image:radial-gradient(var(--dot) 1.2px,transparent 1.6px);
+  background-size:22px 22px;
+  color:var(--text);
+  font-family:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+  padding:calc(env(safe-area-inset-top,0px) + 56px) 16px calc(env(safe-area-inset-bottom,0px) + 48px);
+}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+
+header{display:flex;flex-direction:column;gap:14px}
+.eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.3em;color:var(--muted)}
+h1{margin:0;font-size:clamp(56px,14vw,104px);font-weight:900;line-height:1;letter-spacing:.06em}
+h1 span{display:inline-block}
+h1 span:nth-child(1){color:#ff9a3c}
+h1 span:nth-child(2){color:#5cb8f0}
+h1 span:nth-child(3){color:#7ce0ff}
+h1 span:nth-child(4){color:#e6b36a}
+.lead{margin:0;font-size:16px;line-height:1.8;color:var(--muted);max-width:34em}
+.lead b{color:var(--text);font-weight:700}
+
+.grid{display:grid;grid-template-columns:1fr;gap:20px}
+@media (min-width:720px){ .grid{grid-template-columns:repeat(2,1fr);gap:24px} }
+
+.card{
+  --glow:rgba(255,255,255,.2);
+  display:flex;flex-direction:column;
+  background:var(--card);border:1px solid var(--card-edge);border-radius:20px;overflow:hidden;
+  color:inherit;text-decoration:none;
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.card:hover,.card:focus-visible{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 18px 50px -12px var(--glow)}
+.card:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.shot{position:relative;aspect-ratio:16/10;max-width:100%;overflow:hidden;background:#0d1024}
+.shot img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.card:hover .shot img{transform:scale(1.04)}
+.shot::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:var(--accent)}
+.body{display:flex;flex-direction:column;gap:12px;padding:20px 22px 22px;flex:1}
+.title-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+h2{margin:0;font-size:24px;font-weight:900;letter-spacing:.02em}
+.genre{font-size:12px;font-weight:700;color:var(--accent);white-space:nowrap}
+.desc{margin:0;font-size:14px;line-height:1.75;color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:auto 0 0;padding:0;list-style:none}
+.meta li{display:flex;gap:6px;align-items:baseline;font-size:12px;padding:6px 10px;border-radius:999px;background:var(--chip)}
+.meta li span{color:var(--muted)}
+.meta li b{font-weight:700}
+.play{align-self:flex-start;margin-top:4px;font-size:14px;font-weight:900;color:#14172c;background:var(--accent);border-radius:999px;padding:10px 20px}
+
+.c-kingyo{--accent:#ff9a3c;--glow:rgba(255,154,60,.45)}
+.c-sora{--accent:#5cb8f0;--glow:rgba(92,184,240,.45)}
+.c-flip{--accent:#7ce0ff;--glow:rgba(124,224,255,.45)}
+.c-mizu{--accent:#e6b36a;--glow:rgba(230,179,106,.45)}
+
+footer{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--card-edge);font-size:13px;color:var(--muted)}
+footer a{color:var(--text);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:1px}
+footer a:hover{border-color:var(--text)}
+
+@media (prefers-reduced-motion:reduce){
+  .card,.shot img{transition:none}
+  .card:hover,.card:focus-visible{transform:none}
+  .card:hover .shot img{transform:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">GAME CORNER</p>
+    <h1 aria-label="あそびば"><span>あ</span><span>そ</span><span>び</span><span>ば</span></h1>
+    <p class="lead">ブラウザですぐ遊べる、手づくりの小さなゲーム。インストールはいらず、<b>スマホでもパソコンでも</b>そのまま遊べます。</p>
+  </header>
+
+  <main class="grid">
+    <a class="card c-kingyo" href="https://toughlllgumi.github.io/kingyo-sukui/">
+      <div class="shot"><img src="shots/kingyo-sukui.webp" alt="金魚すくいの開始画面。水槽に金魚が泳いでいる" width="960" height="600" loading="lazy"></div>
+      <div class="body">
+        <div class="title-row"><h2>金魚すくい</h2><span class="genre">縁日</span></div>
+        <p class="desc">ポイの紙が破れないよう、ふちで受けてそっとすくう。遊ぶほどポイが梅・竹・松と進化する。</p>
+        <ul class="meta">
+          <li><span>操作</span><b>押す・はなす</b></li>
+          <li><span>1回</span><b>約3分</b></li>
+        </ul>
+        <span class="play">遊ぶ</span>
+      </div>
+    </a>
+
+    <a class="card c-sora" href="https://toughlllgumi.github.io/soratsumi/">
+      <div class="shot"><img src="shots/soratsumi.webp" alt="そらつみの開始画面。青空と街並み" width="960" height="600" loading="lazy"></div>
+      <div class="body">
+        <div class="title-row"><h2>そらつみ</h2><span class="genre">積み上げ</span></div>
+        <p class="desc">すべってくるブロックを積み上げて、奈良の大仏から富士山まで、実在の高さを目指す。</p>
+        <ul class="meta">
+          <li><span>操作</span><b>タップ</b></li>
+          <li><span>1回</span><b>約2分</b></li>
+        </ul>
+        <span class="play">遊ぶ</span>
+      </div>
+    </a>
+
+    <a class="card c-flip" href="https://toughlllgumi.github.io/flip-dash/">
+      <div class="shot"><img src="shots/flip-dash.webp" alt="フリップダッシュの開始画面" width="960" height="600" loading="lazy"></div>
+      <div class="body">
+        <div class="title-row"><h2>フリップダッシュ</h2><span class="genre">アクション</span></div>
+        <p class="desc">タップで重力を反転させて、迫ってくる障害物のすき間をすり抜ける。進むほど速くなる。</p>
+        <ul class="meta">
+          <li><span>操作</span><b>タップ・スペース</b></li>
+          <li><span>1回</span><b>約1分</b></li>
+        </ul>
+        <span class="play">遊ぶ</span>
+      </div>
+    </a>
+
+    <a class="card c-mizu" href="https://toughlllgumi.github.io/mizunara/">
+      <div class="shot"><img src="shots/mizunara.webp" alt="Mizunaraの将棋盤" width="960" height="600" loading="lazy"></div>
+      <div class="body">
+        <div class="title-row"><h2>Mizunara</h2><span class="genre">将棋</span></div>
+        <p class="desc">1台で向かい合って指す2人対戦と、コンピュータとの対戦ができる将棋。駒の見た目も選べる。</p>
+        <ul class="meta">
+          <li><span>操作</span><b>タップ・クリック</b></li>
+          <li><span>1局</span><b>約20分</b></li>
+        </ul>
+        <span class="play">遊ぶ</span>
+      </div>
+    </a>
+  </main>
+
+  <footer>
+    <span>ゲーム 4本</span>
+    <a href="https://toughlllgumi.github.io/app-portal/">ゲーム以外のアプリはこちら</a>
+  </footer>
+</div>
+</body>
+</html>
